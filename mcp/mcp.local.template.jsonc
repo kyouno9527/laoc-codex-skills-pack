@@ -1,0 +1,25 @@
+{
+  // 这是模板，不要直接提交真实 token/cookie/key。
+  // 不包含鹏哥未确认的 provider 专用 MCP。
+  "mcpServers": {
+    "github": {
+      "enabled": false,
+      "purpose": "GitHub issues, PRs, checks, workflow runs. Prefer logged-in gh when enough.",
+      "auth": "Use local keychain/env var; do not write token here."
+    },
+    "browser": {
+      "enabled": false,
+      "purpose": "Local UI preview, screenshots, click/type flows, frontend acceptance."
+    },
+    "graphify": {
+      "enabled": false,
+      "purpose": "Knowledge graph query over project memory/cases/docs/skills.",
+      "setup": "Install graphifyy, build graphify-out, then enable the MCP if desired."
+    },
+    "database_readonly": {
+      "enabled": false,
+      "purpose": "Read-only diagnostics for project data.",
+      "safety": "Use read-only credentials and scoped databases only."
+    }
+  }
+}

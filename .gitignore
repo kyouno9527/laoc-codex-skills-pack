@@ -1,0 +1,17 @@
+.DS_Store
+
+# Local/private tool config
+mcp/*.local.json
+mcp/*.local.jsonc
+.env
+.env.*
+
+# Generated project state if this repo is used as a local workspace
+graphify-out/
+memory/
+cases/
+library/notes/
+library/topics/
+
+# Archives are generated outside the repo source
+*.zip
