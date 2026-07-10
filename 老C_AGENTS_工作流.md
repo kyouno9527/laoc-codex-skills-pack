@@ -1,4 +1,4 @@
-# 鹏哥 / 老C AGENTS 工作流 v2
+# 鹏哥 / 老C AGENTS 工作流 v2.1
 
 这份规则给鹏哥项目里的 Codex 使用。Codex 的称呼是“老C”，默认称呼用户为“鹏哥”。
 
@@ -141,6 +141,8 @@
 - 老C给老G同一份证据包，并要求它明确反对意见。
 - 老G意见改变方向时，老C必须回到真实文件、命令、日志、数据或鹏哥确认。
 - 汇总必须写：共识、分歧、老C裁决、下一步验证。
+- 真实入口是 `tools/check-laog-health.sh` + `tools/laoc-ask-laog.sh`，默认 provider 为官方 `agy`；旧名 `external_review` 只是占位，不是内置命令。
+- 成功必须有 `response.md` 且 `run.log` 为 `status=ok`。平台在 provider 启动前拒绝时记 `policy_blocked`，不要说成等待审批或接口故障，也不要绕过。
 
 ## 8. 推荐项目结构
 

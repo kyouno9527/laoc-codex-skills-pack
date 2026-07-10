@@ -1,10 +1,20 @@
-# v2 更新说明
+# v2.1 更新说明
 
-时间：2026-07-02
+时间：2026-07-10
 
-这版是给鹏哥的老C工作流二次蒸馏，基于最新 Shikagami 主工作法和当前本地执行规范。
+## v2.1 兼听兼容补丁
 
-## 相比 2026-06-08 旧包的主要变化
+- 修复旧包只写“老G角色”但没有真实调用入口的问题。
+- 删除对占位命令 `external_review` 的依赖；便携默认 provider 改为官方 `agy`。
+- 新增 `tools/check-laog-health.sh`：用无敏感烟测检查 provider、登录态和基础输出。
+- 新增 `tools/laoc-ask-laog.sh`：从 request 文件发起 review，成功写 `response.md`，所有运行写 `run.log`。
+- `LAOG_PROVIDER=custom` 只接受单个可执行文件，不执行 shell 片段、不使用 `eval`。
+- 明确区分 `preflight_failed`、`provider_failed`、`empty_output` 和宿主层 `policy_blocked`；任何一种都不能包装成成功。
+- 平台在 provider 启动前拒绝外发时，不尝试绕过；人工最小脱敏转发仍是合规 fallback。
+
+## v2 相比 2026-06-08 旧包的主要变化
+
+v2 是给鹏哥的老C工作流二次蒸馏，基于 Shikagami 主工作法和本地执行规范。
 
 - 增加事实源分级：`observed`、`recorded`、`indexed`、`external`、`backup`。
 - 增加“方案烤问”：方案、设计、计划类问题一次只问一个关键问题，并给推荐答案和理由。

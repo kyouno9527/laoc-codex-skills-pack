@@ -1,4 +1,4 @@
-# 鹏哥 / 老C 工作流 v2 安装指南
+# 鹏哥 / 老C 工作流 v2.1 安装指南
 
 目标：让鹏哥项目里的 Codex（老C）具备四件事：
 
@@ -7,18 +7,19 @@
 3. `图谱记忆`：能查项目长期记忆、状态、case、经验和技能。
 4. `兼听则明`：用老G做外部复核，但不让老G替代事实源。
 
-v2 新增重点：
+v2.1 新增重点：
 
 - 事实源分级：observed / recorded / indexed / external / backup。
 - 方案烤问：方案类问题一次只问一个关键问题，并给推荐答案。
 - 四层验收：存在、实质、接线、功能。
 - workflow-as-code：长期规则、提示词和检查表写入 Markdown/YAML。
 - 老G review-only：老G不写文件、不当事实、不替老C裁决。
+- 兼听真实接线：默认 `agy`，先健康检查，正式调用成功必须有 `response.md` 和 `run.log: status=ok`。
 
 ## 0. 交付包结构
 
 ```text
-2026-07-02-pengge-laoc-workflow-v2/
+laoc-codex-skills-pack/
 ├── README.md
 ├── INSTALL_LAOC_WORKFLOW.md
 ├── 老C_AGENTS_工作流.md
@@ -44,7 +45,9 @@ v2 新增重点：
     ├── install-laoc-workflow.sh
     ├── laoc-memory-ask.sh
     ├── laoc-graph-rebuild.sh
-    └── check-laoc-tools.sh
+    ├── check-laoc-tools.sh
+    ├── check-laog-health.sh
+    └── laoc-ask-laog.sh
 ```
 
 ## 1. Git 拉取
@@ -69,7 +72,7 @@ bash scripts/install-laoc-workflow.sh /path/to/pengge-project
 
 - 在项目里创建 `skills/`、`tools/`、`memory/`、`cases/`、`library/notes/`、`library/topics/`。
 - 把老C skills 复制到项目 `skills/`。
-- 把 `laoc-memory-ask.sh`、`laoc-graph-rebuild.sh` 和 `check-laoc-tools.sh` 复制到项目 `tools/`。
+- 把记忆、图谱、工具检查和老G兼听脚本复制到项目 `tools/`。
 - 创建或追加 `AGENTS.md` 的老C工作流片段。
 - 把 MCP 说明和模板复制到项目 `mcp/`。
 - 不覆盖已有 `AGENTS.md`；如果已存在，只追加一次标记区块。
@@ -184,17 +187,40 @@ graphify-out/
 
 ## 7. 配置老G
 
-老G是外部复核席，不是执行者。先确认鹏哥机器上的外部 review CLI 可用：
+老G是外部复核席，不是执行者。便携默认 provider 是官方 `agy`；先在鹏哥机器上完成安装和登录，再检查本地命令：
 
 ```bash
-external_review --version
+command -v agy
+export LAOG_PROVIDER=agy
 ```
 
-如果命令名不是 `external_review`，把实际命令写进环境变量：
+也可以显式选 Kimi，或接一个遵守 `COMMAND "PROMPT"` 输入合同的自有可执行文件：
 
 ```bash
-export LAOG_CMD="external_review"
+export LAOG_PROVIDER=kimi
+
+# 自有 CLI：只填单个可执行文件，不填 shell 片段
+export LAOG_PROVIDER=custom
+export LAOG_CMD=/absolute/path/to/review-command
 ```
+
+不要使用旧包里的占位名 `external_review`；它不是 Codex 内置命令。
+
+正式复核前跑无敏感健康检查：
+
+```bash
+tools/check-laog-health.sh cases/<case>/laog/health
+```
+
+把最小必要证据写进 request 文件，再由固定入口调用：
+
+```bash
+tools/laoc-ask-laog.sh cases/<case>/laog/request.md cases/<case>/laog
+```
+
+成功合同：`cases/<case>/laog/response.md` 存在且非空，`run.log` 包含 `status=ok`。如果健康检查失败、provider 失败、空输出或平台在进程启动前拒绝外发，都不能算成功。
+
+平台前置拒绝应记为 `policy_blocked`：这不是等待鹏哥审批，也不能据此判断老G接口坏了。长期授权不能覆盖宿主平台安全门禁；不要用其他命令、代理或 curl 绕过。人工转发最小脱敏稿仍是合规 fallback。
 
 老C问老G的标准提示词：
 
@@ -233,7 +259,7 @@ tools/check-laoc-tools.sh
 
 - 必需：`git`、`rg`、`python3`、项目自己的构建/测试工具。
 - 强推荐：`gh`，用于 GitHub issues、PR、checks、workflow runs。
-- 强推荐：`external_review` 或鹏哥实际的外部 review CLI 命令，用作老G。
+- 强推荐：官方 `agy` 或鹏哥显式配置的 review CLI，用作老G。
 - 推荐：`graphify`，用于图谱记忆增强档。
 - 可选 MCP：GitHub、浏览器/Playwright、graphify MCP、文件/数据库只读查询。
 
@@ -251,6 +277,8 @@ MCP 配置看 `mcp/README.md` 和 `mcp/mcp.local.template.jsonc`。原则是：
 test -f AGENTS.md
 test -d skills/laoc-shikagami
 test -x tools/laoc-memory-ask.sh
+test -x tools/check-laog-health.sh
+test -x tools/laoc-ask-laog.sh
 tools/check-laoc-tools.sh
 tools/laoc-memory-ask.sh "老C应该怎么验收"
 ```
@@ -277,6 +305,7 @@ test -f graphify-out/graph.json
 - 老C知道方案烤问一次只问一个关键问题，并给推荐答案。
 - 老C知道交付前做存在、实质、接线、功能四层验收。
 - 老C知道老G只做复核，不当事实源。
+- 老C知道兼听成功必须有 `response.md` 和 `run.log: status=ok`，也知道 `policy_blocked` 不能绕过。
 - 老C不会说“没验证也算完成”。
 
 ## 10. 后续使用口令

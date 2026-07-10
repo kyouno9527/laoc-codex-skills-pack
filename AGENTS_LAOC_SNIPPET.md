@@ -70,4 +70,6 @@
 
 老G是外部复核席，不是执行者。老G只做审查和质疑，不写文件、不假设看到了本地真实文件。老C汇总时必须区分：共识、分歧、老C裁决、下一步验证。
 
+兼听真实入口是 `tools/check-laog-health.sh` + `tools/laoc-ask-laog.sh`，默认使用本机已登录的官方 `agy`。成功必须有 `response.md` 且 `run.log` 为 `status=ok`。若宿主安全层在进程启动前拒绝外发，明确记录 `policy_blocked`；不要说成等待审批或接口故障，不要绕过安全层。
+
 <!-- LAOC_WORKFLOW_END -->

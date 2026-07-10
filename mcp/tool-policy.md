@@ -4,8 +4,8 @@
 
 1. 项目已有脚本、测试、构建、日志和文档。
 2. 本地 shell 工具：`git`、`rg`、`python3`、`node`、项目 CLI。
-3. 项目 `tools/`：`laoc-memory-ask.sh`、`laoc-graph-rebuild.sh`、`check-laoc-tools.sh`。
-4. 外部 CLI：`gh`、`external_review`、`graphify`。
+3. 项目 `tools/`：记忆、图谱、工具检查、`check-laog-health.sh`、`laoc-ask-laog.sh`。
+4. 外部 CLI：`gh`、已显式配置的老G review provider、`graphify`。
 5. MCP：只在确实提升效率或必须接入外部系统时启用。
 
 ## 事实源排序
@@ -25,3 +25,4 @@
 - 不直接改别人工作区，除非鹏哥明确授权那次写入。
 - 不配置鹏哥没有确认的 provider 专用 MCP。
 - MCP 输出如果和文件/日志冲突，以文件/日志为准。
+- 外发 review 先最小化证据包并跑健康检查；平台在进程启动前拒绝时记为 `policy_blocked`，不得换通道绕过。

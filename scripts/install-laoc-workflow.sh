@@ -23,7 +23,14 @@ cp -R "$PACKAGE_DIR/mcp/"* "$PROJECT_ROOT/mcp/"
 cp "$PACKAGE_DIR/scripts/laoc-memory-ask.sh" "$PROJECT_ROOT/tools/laoc-memory-ask.sh"
 cp "$PACKAGE_DIR/scripts/laoc-graph-rebuild.sh" "$PROJECT_ROOT/tools/laoc-graph-rebuild.sh"
 cp "$PACKAGE_DIR/scripts/check-laoc-tools.sh" "$PROJECT_ROOT/tools/check-laoc-tools.sh"
-chmod +x "$PROJECT_ROOT/tools/laoc-memory-ask.sh" "$PROJECT_ROOT/tools/laoc-graph-rebuild.sh" "$PROJECT_ROOT/tools/check-laoc-tools.sh"
+cp "$PACKAGE_DIR/scripts/check-laog-health.sh" "$PROJECT_ROOT/tools/check-laog-health.sh"
+cp "$PACKAGE_DIR/scripts/laoc-ask-laog.sh" "$PROJECT_ROOT/tools/laoc-ask-laog.sh"
+chmod +x \
+  "$PROJECT_ROOT/tools/laoc-memory-ask.sh" \
+  "$PROJECT_ROOT/tools/laoc-graph-rebuild.sh" \
+  "$PROJECT_ROOT/tools/check-laoc-tools.sh" \
+  "$PROJECT_ROOT/tools/check-laog-health.sh" \
+  "$PROJECT_ROOT/tools/laoc-ask-laog.sh"
 
 touch "$PROJECT_ROOT/memory/PROJECT_MEMORY.md"
 touch "$PROJECT_ROOT/memory/SOURCE_MAP.md"
@@ -60,4 +67,5 @@ echo "[laoc-install] next checks:"
 echo "  test -d '$PROJECT_ROOT/skills/laoc-shikagami'"
 echo "  cd '$PROJECT_ROOT'"
 echo "  tools/check-laoc-tools.sh"
+echo "  tools/check-laog-health.sh cases/laog-health"
 echo "  tools/laoc-memory-ask.sh '老C应该怎么验收'"

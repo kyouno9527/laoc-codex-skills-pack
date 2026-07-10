@@ -14,7 +14,7 @@
 | 能力 | 用途 | 建议 |
 |---|---|---|
 | GitHub / `gh` | issues、PR、checks、workflow runs、notifications | 优先用已登录 `gh`；MCP 可选 |
-| External review CLI / 老G | 兼听则明外部复核 | 只 review，不写文件 |
+| `agy` 或显式配置的 review CLI / 老G | 兼听则明外部复核 | 只 review，不写文件 |
 | 浏览器 / Playwright MCP | 打开本地页面、截图、点击、UI 验收 | 前端项目推荐 |
 | graphify / graphify MCP | 项目图谱和长期记忆查询 | 推荐增强档 |
 | Filesystem | 受控读写项目文件 | Codex已有文件能力时不必重复 |
@@ -30,7 +30,7 @@
 ## 安装顺序
 
 1. 先让老C在纯本地状态可用：`AGENTS.md` + `skills/` + `tools/`。
-2. 配老G：确认 `external_review --version` 或设置 `LAOG_CMD`。
+2. 配老G：默认确认 `agy` 已安装登录；其他工具用 `LAOG_PROVIDER` / `LAOG_CMD` 显式配置。
 3. 配 GitHub：确认 `gh auth status`。
 4. 配 graphify：安装 `graphifyy`，在项目根跑 `graphify .`。
 5. 前端项目再配浏览器/Playwright MCP。
@@ -41,8 +41,10 @@
 ```bash
 tools/check-laoc-tools.sh
 gh auth status
-external_review --version
+tools/check-laog-health.sh cases/laog-health
 graphify --version
 ```
 
 没有装某个可选工具不算失败；老C需要在汇报里说清哪些能力可用、哪些不可用。
+
+`check-laog-health.sh` 只证明无敏感烟测可运行。若宿主平台在正式调用前阻止项目内容外发，应记录 `policy_blocked` 并停止；不得绕过安全层。
